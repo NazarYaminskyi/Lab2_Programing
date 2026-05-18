@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    background-color: #222;
+    padding: 15px;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    color: #00bcd4;
+}
+
+.container {
+    padding: 30px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+}
+
+.btn-add {
+    background: #4caf50;
+}
+
+.btn-add:hover {
+    background: #3e8e41;
+}
+
+.btn-edit {
+    background: #2196f3;
+}
+
+.btn-delete {
+    background: #f44336;
+}
+
+.search-box {
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    padding: 8px;
+    width: 250px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background: #333;
+    color: white;
+}
+
+tr:hover {
+    background: #f1f1f1;
+}
+
+.actions a {
+    margin-right: 5px;
+}
+
+.navbar a.active {
+    color: #00bcd4;
+}
+
+.text-link {
+    color: black;
+    text-decoration: none;
+}
+
+.text-link:hover {
+    text-decoration: underline;
+}

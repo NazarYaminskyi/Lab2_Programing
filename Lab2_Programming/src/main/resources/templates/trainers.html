@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trainers</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <a href="/visitors">Visitors</a>
+    <a class="active" href="/trainers">Trainers</a>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+    <h1>🏋️ Trainers</h1>
+
+    <form action="/trainers/add" method="post">
+
+        <input name="name" placeholder="name">
+
+        <input name="specialization" placeholder="specialization">
+
+        <button type="submit">Add Trainer</button>
+
+    </form>
+
+    <p th:if="${error}"
+       th:text="${error}"
+       style="color:red;">
+    </p>
+
+    <div class="search-box">
+
+        <h2>Search Trainers</h2>
+
+        <form action="/trainers/search" method="get">
+
+            <input type="text"
+                   name="name"
+                   placeholder="Search by name">
+
+            <input type="number"
+                   name="id"
+                   placeholder="Search by ID">
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+    </div>
+
+    <table>
+
+        <thead>
+
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Specialization</th>
+            <th>Actions</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        <tr th:each="trainer : ${trainers}">
+
+            <td th:text="${trainer.id}"></td>
+
+            <td th:text="${trainer.name}"></td>
+
+            <td th:text="${trainer.specialization}"></td>
+
+            <td>
+
+                <form th:action="@{/trainers/{id}(id=${trainer.id})}"
+                      method="get"
+                      style="display:inline;">
+
+                    <button type="submit">Manage</button>
+
+                </form>
+
+                <form th:action="@{/trainers/delete/{id}(id=${trainer.id})}"
+                      method="post"
+                      style="display:inline;"
+                      onsubmit="return confirm('Delete this trainer?')">
+
+                    <button type="submit">Delete</button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>

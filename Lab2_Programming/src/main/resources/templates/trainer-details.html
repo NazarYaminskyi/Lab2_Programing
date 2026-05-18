@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Trainer Details</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<div class="navbar">
+    <a href="/visitors">Visitors</a>
+    <a href="/trainers">Trainers</a>
+</div>
+
+<div class="container">
+
+    <h1>🏋️ Trainer Details</h1>
+
+    <div class="card">
+
+        <h2 th:text="${trainer.name}"></h2>
+
+        <p>
+            <strong>ID:</strong>
+            <span th:text="${trainer.id}"></span>
+        </p>
+
+        <p>
+            <strong>Specialization:</strong>
+            <span th:text="${trainer.specialization}"></span>
+        </p>
+        <h2>Update Specialization</h2>
+
+        <form th:action="@{/trainers/{id}/update-specialization(id=${trainer.id})}"
+              method="post">
+
+            <input type="text"
+                   name="specialization"
+                   th:value="${trainer.specialization}"
+                   placeholder="Enter new specialization">
+
+            <button type="submit">
+                Update
+            </button>
+
+        </form>
+        <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+        <form th:action="@{/trainers/delete/{id}(id=${trainer.id})}"
+              method="post"
+              style="display:inline;"
+              onsubmit="return confirm('Delete this trainer? (this can`t be undone)')">
+
+            <button type="submit">Delete Trainer</button>
+        </form>
+    </div>
+
+    <hr>
+
+    <h2>👥 Clients</h2>
+
+    <div th:if="${#lists.isEmpty(trainer.clients)}">
+        <p>No clients yet.</p>
+    </div>
+
+    <table th:if="${!#lists.isEmpty(trainer.clients)}" border="1">
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="client : ${trainer.clients}">
+
+            <td th:text="${client.id}"></td>
+
+            <td>
+                <a th:href="@{/visitors/{id}(id=${client.id})}"
+                   class="text-link">
+                    <span th:text="${client.name}"></span>
+                </a>
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+    <hr>
+
+    <form action="/trainers" method="get">
+        <button type="submit">
+            ← Back to Trainers
+        </button>
+    </form>
+
+</div>
+
+</body>
+</html>

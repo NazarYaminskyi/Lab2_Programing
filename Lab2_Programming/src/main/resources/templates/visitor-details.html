@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Visitor Details</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <a href="/visitors">Visitors</a>
+    <a href="/trainers">Trainers</a>
+</div>
+
+<div class="container">
+
+    <h1>Visitor Details</h1>
+
+    <div class="visitor-card">
+
+        <h2 th:text="${visitor.name}"></h2>
+
+        <p>
+            <strong>ID:</strong>
+            <span th:text="${visitor.id}"></span>
+        </p>
+
+        <form th:action="@{/visitors/delete/{id}(id=${visitor.id})}"
+              method="post"
+              onsubmit="return confirm('Delete this visitor? (this can`t be undone)')"
+              style="display:inline;">
+
+            <button type="submit">Delete Visitor</button>
+
+        </form>
+
+    </div>
+
+    <hr>
+
+    <!-- VISITS -->
+    <h2>Visits</h2>
+
+    <div th:if="${#lists.isEmpty(visitor.visits)}">
+        <p>No visits yet.</p>
+    </div>
+
+    <table th:if="${!#lists.isEmpty(visitor.visits)}" border="1">
+        <tr>
+            <th>Visit ID</th>
+            <th>Visit Date</th>
+            <th>Visit Time</th>
+        </tr>
+
+        <tr th:each="visit : ${visitor.visits}">
+            <td th:text="${visit.id}"></td>
+            <td th:text="${#temporals.format(visit.visitTime, 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(visit.visitTime, 'HH:mm')}"></td>
+        </tr>
+    </table>
+
+    <br>
+
+    <form th:action="@{/visitors/{id}/visit(id=${visitor.id})}"
+          method="post"
+          onsubmit="return confirm('Add visit? (this can`t be undone)')">
+
+        <button type="submit">Add Visit</button>
+
+    </form>
+
+    <hr>
+
+    <h2>Trainer</h2>
+
+    <div th:if="${visitor.trainer == null}">
+        <p>No trainer assigned.</p>
+    </div>
+
+    <div th:if="${visitor.trainer != null}">
+            <a th:href="@{/trainers/{id}(id=${visitor.trainer.id})}"
+               class="text-link">
+
+                <span th:text="${visitor.trainer.name}"></span>
+
+            </a>
+        <p><strong>Specialization:</strong> <span th:text="${visitor.trainer.specialization}"></span></p>
+    </div>
+
+    <hr>
+
+    <h2>Assign Trainer</h2>
+
+    <div style="display:flex; gap:10px; align-items:center;">
+
+        <form th:action="@{/visitors/{id}/assign-trainer(id=${visitor.id})}" method="post">
+            <select name="trainerId">
+                <option th:each="trainer : ${trainers}"
+                        th:value="${trainer.id}"
+                        th:text="${trainer.name}">
+                </option>
+            </select>
+
+            <button type="submit">Assign</button>
+        </form>
+
+        <form th:action="@{/visitors/{id}/remove-trainer(id=${visitor.id})}"
+              method="post"
+              th:if="${visitor.trainer != null}">
+            <button type="submit">Remove Trainer</button>
+        </form>
+
+    </div>
+    <p th:if="${error}"
+       th:text="${error}"
+       style="color:red;">
+    </p>
+
+    <hr>
+
+    <form action="/visitors" method="get">
+        <button type="submit">← Back to Visitors</button>
+    </form>
+
+</div>
+
+</body>
+</html>
+
