@@ -94,7 +94,7 @@ public class VisitorsController {
             @PathVariable Long id,
             Model model) {
 
-        Visitor visitor = gymService.getVisitorById(id);
+        Visitor visitor = gymService.getVisitorByIdOrThrow(id);
 
         model.addAttribute("visitor", visitor);
         model.addAttribute("trainers",

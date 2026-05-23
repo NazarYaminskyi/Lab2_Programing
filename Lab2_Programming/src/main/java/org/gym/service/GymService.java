@@ -5,7 +5,9 @@ import org.gym.entity.Visitor;
 import org.gym.entity.Trainer;
 import org.gym.repository.VisitorRepository;
 import org.gym.repository.TrainerRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,12 +40,15 @@ public class GymService {
         return visitorRepository.findById(id).orElse(null);
     }
 
+    public Visitor getVisitorByIdOrThrow(Long id) {
+        return visitorRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Visitor not found"
+                ));
+    }
+
     public Visitor addVisitor(String name) {
-
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Visitor name cannot be empty");
-        }
-
         Visitor visitor = new Visitor(name);
         return visitorRepository.save(visitor);
     }
@@ -51,7 +56,10 @@ public class GymService {
     public void addVisit(Long visitorId) {
 
         Visitor visitor = visitorRepository.findById(visitorId)
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Visitor not found"
+                ));
 
         Visit visit = new Visit(LocalDateTime.now());
 
@@ -72,6 +80,14 @@ public class GymService {
         return trainerRepository.findById(id).orElse(null);
     }
 
+    public Trainer getTrainerByIdOrThrow(Long id) {
+        return trainerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Trainer not found"
+                ));
+    }
+
     public Trainer addTrainer(String name, String specialization) {
         Trainer trainer = new Trainer(name, specialization);
         return trainerRepository.save(trainer);
@@ -83,11 +99,9 @@ public class GymService {
 
     public void assignTrainer(Long visitorId, Long trainerId) {
 
-        Visitor visitor = visitorRepository.findById(visitorId)
-                .orElseThrow();
+        Visitor visitor = getVisitorByIdOrThrow(visitorId);
 
-        Trainer trainer = trainerRepository.findById(trainerId)
-                .orElseThrow();
+        Trainer trainer = getTrainerByIdOrThrow(trainerId);
         if (!trainer.canAcceptMoreClients()) {
             throw new IllegalStateException(
                     "Trainer already has maximum clients");
@@ -99,8 +113,7 @@ public class GymService {
 
     public void removeTrainerFromVisitor(Long visitorId) {
 
-        Visitor visitor = visitorRepository.findById(visitorId)
-                .orElseThrow();
+        Visitor visitor = getVisitorByIdOrThrow(visitorId);
 
         visitor.setTrainer(null);
 
@@ -109,8 +122,7 @@ public class GymService {
 
     public void updateTrainerSpecialization(Long id, String specialization) {
 
-        Trainer trainer = trainerRepository.findById(id)
-                .orElseThrow();
+        Trainer trainer = getTrainerByIdOrThrow(id);
 
         trainer.setSpecialization(specialization);
 

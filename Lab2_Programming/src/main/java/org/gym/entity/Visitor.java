@@ -31,8 +31,6 @@ public class Visitor {
         setName(name);
     }
 
-    // бізнес логіка
-
     public void addVisit(Visit visit) {
         visits.add(visit);
         visit.setVisitor(this);

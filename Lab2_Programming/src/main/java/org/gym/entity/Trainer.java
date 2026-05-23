@@ -28,7 +28,6 @@ public class Trainer {
     private String specialization;
 
     public Trainer() {
-        // для Hibernate
     }
 
     public Trainer(String name, String specialization) {
@@ -78,7 +77,6 @@ public class Trainer {
 
         this.specialization = specialization.trim();
     }
-
 
     public boolean canAcceptMoreClients() {
         return clients.size() < MAX_CLIENTS;

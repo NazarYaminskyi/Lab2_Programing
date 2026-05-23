@@ -88,7 +88,7 @@ public class TrainersController {
             @PathVariable Long id,
             Model model) {
 
-        Trainer trainer = gymService.getTrainerById(id);
+        Trainer trainer = gymService.getTrainerByIdOrThrow(id);
 
         model.addAttribute("trainer", trainer);
 
